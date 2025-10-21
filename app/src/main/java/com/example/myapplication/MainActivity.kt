@@ -1,7 +1,8 @@
 package com.example.myapplication
 
 
-import android.R
+
+
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -10,11 +11,9 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -24,16 +23,19 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import kotlin.math.cos
-import androidx.compose.foundation.Image
-import androidx.compose.ui.res.painterResource
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.sp
 
 
 class MainActivity : ComponentActivity() {
@@ -41,62 +43,60 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            App()
+            PhotoCard("What anmials live on savanna","savanna", modifier = Modifier)
             }
         }
     }
 
 
+
+
 @Composable
-fun App() {
-    MyApplicationTheme {
-        Surface(
-            modifier = Modifier.fillMaxSize(),
-            color = Color.Yellow
-        ) {
-            Box(
-                Modifier
-                    .fillMaxWidth()
-                    .fillMaxHeight(0.5f)   // Box = 50% of screen height
-                    .padding(16.dp)
+fun PhotoCard(title: String, contentDescription: String, modifier: Modifier = Modifier) {
+    Card(
+        modifier = modifier.fillMaxWidth().padding(10.dp),
+        shape = RoundedCornerShape(16.dp),
+        elevation = CardDefaults.cardElevation(10.dp)
+    ) {
+        Column(Modifier.fillMaxWidth()) {
+
+            // Header band – fixed height so it won't steal all space
+            Surface(
+                modifier = Modifier.fillMaxWidth().height(72.dp),
+                color = Color.LightGray
             ) {
-                Column(
-                    Modifier
-                        .fillMaxSize()               // fill the Box
-                        .background(Color.White)
-                        .border(5.dp, Color.Red)
-                ) {
+                Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     Text(
-                        "ight",
-                        color = Color.Red,
-                        modifier = Modifier.clickable {
-                            // TODO: handle click
-                        }
-                    )
-
-                    Text("ayee")
-
-                    Image(
-                        painter = painterResource(id = R.drawable.savanna),
-                        contentDescription = "jgeww"
+                        text = title,
+                        textAlign = TextAlign.Center,
+                        fontSize = 30.sp,
+                        fontWeight = FontWeight.ExtraBold
                     )
                 }
             }
+
+            // Image section
+            Box(
+                modifier = Modifier.fillMaxWidth().height(200.dp)
+                    .offset(y = 25.dp),
+                contentAlignment = Alignment.TopCenter
+            ) {
+                Image(
+                    painter = painterResource(R.drawable.savanna),
+                    contentDescription = contentDescription,
+                    modifier = Modifier.matchParentSize(),
+                    contentScale = ContentScale.Crop
+                )
+            }
         }
     }
 }
-
-@Composable
-fun Photo() {
-
-}
-
 
 
 @Preview(showBackground = true)
 @Composable
 fun AppPreview() {
     MyApplicationTheme {
-        App()
+        PhotoCard(title = "What animals live on savanna ?","Twoja stara", modifier = Modifier.fillMaxSize())
     }
 }
